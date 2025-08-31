@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { validateEmail, validateText } from '../../../../shared/validations/validators';
 
 type Mode = 'signin' | 'signup';
@@ -58,6 +58,7 @@ export function useAuthForm(opts: {
   const clearFieldError = useCallback((field: keyof AuthFormValues) => {
     setErrors(prev => {
       if (!prev[field]) return prev;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [field]: _, ...rest } = prev;
       return rest;
     });
@@ -68,6 +69,7 @@ export function useAuthForm(opts: {
     // clear error as user edits
     setErrors(prev => {
       if (!prev[field]) return prev;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [field]: _, ...rest } = prev;
       return rest;
     });
@@ -78,6 +80,7 @@ export function useAuthForm(opts: {
     // clear confirmPassword and related error when switching to signin
     setValues(prev => ({ ...prev, confirmPassword: '' }));
     setErrors(prev => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmPassword, ...rest } = prev;
       return rest;
     });

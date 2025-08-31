@@ -1,11 +1,11 @@
 'use client'
-import React,{useState} from 'react';
+import React from 'react';
 import GlassCard from '../../components/GlassCard';
 import { useDataConfig } from "./_hooks/useDataConfig";
 import DataTable from "./_components/DataTable"
 
 const DataPage: React.FC = () => {
-  const {profiles,allKeys,error}=useDataConfig();
+  const {profiles,allKeys}=useDataConfig();
   return (
     <GlassCard>
       <h2 className="text-2xl font-bold mb-4">User Profiles Dashboard</h2>

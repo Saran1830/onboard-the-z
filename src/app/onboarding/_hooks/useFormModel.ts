@@ -14,6 +14,7 @@ export function useFormModel() {
   const clearError = useCallback((name: string) => {
     setFormErrors((prev) => {
       if (!prev[name]) return prev;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [name]: _, ...rest } = prev;
       return rest;
     });

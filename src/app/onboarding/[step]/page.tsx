@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-export default async function Page({ params }: { params: { step: string } }) {
+export default async function Page({ params }: { params: Promise<{ step: string }> }) {
   const resolvedParams = await params;
   const stepNumber = Number(resolvedParams.step);
   

@@ -97,7 +97,7 @@ export function useOnboardingData(stepNumber: number) {
     })();
 
     return () => { mounted = false; };
-  }, [router, stepNumber]);
+  }, [router, stepNumber, getCurrentPageConfig, shouldUseCache]);
 
   return { loading, redirecting, userEmail, components, pageConfig, totalSteps, initialForm }; // ← return it
 }
