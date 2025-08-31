@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
-export default async function Page({ params }: { params: Promise<{ step: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function Page({ params }: any) {
   const resolvedParams = await params;
   const stepNumber = Number(resolvedParams.step);
   
