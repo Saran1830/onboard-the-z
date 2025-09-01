@@ -7,28 +7,6 @@ A modern, responsive onboarding application built with Next.js 15, TypeScript, S
 [![Supabase](https://img.shields.io/badge/Supabase-Database-green)](https://supabase.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0-38B2AC)](https://tailwindcss.com/)
 
-## ✨ Features
-
-### 🎯 Core Functionality
-- **Multi-step Onboarding Flow**: Progressive user registration with step-by-step guidance
-- **Dynamic User Profiles**: JSON-based flexible profile data storage
-- **Authentication System**: Complete sign-up and sign-in functionality with Supabase Auth
-- **Admin Dashboard**: Manage users, components, and application settings
-- **Responsive Design**: Mobile-first approach with glassmorphic UI elements
-
-### 🎨 UI/UX Features
-- **Glassmorphic Design**: Modern glass-like UI components with backdrop blur effects
-- **Step Indicator**: Visual progress tracking with color-coded steps
-- **Floating Navigation**: Responsive navbar with smooth transitions
-- **Form Validation**: Real-time client-side and server-side validation
-- **Password Confirmation**: Secure password entry with confirmation matching
-
-### 🧪 Testing & Quality
-- **Comprehensive Test Suite**: Unit, integration, and API tests
-- **Multiple Test Types**: Logic validation, component testing, and API route testing
-- **Automated Testing**: Mocha and Chai test framework with TypeScript support
-- **Code Coverage**: Test coverage reporting and validation
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -109,8 +87,6 @@ npm test            # Run test suite
 ### Testing
 - **Mocha** - Test framework
 - **Chai** - Assertion library
-- **@testing-library/react** - React component testing
-- **jsdom** - DOM simulation for testing
 
 ### Development Tools
 - **ESLint** - Code linting
