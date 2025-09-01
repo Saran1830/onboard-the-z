@@ -1,6 +1,7 @@
 "use client"
 import { useCallback, useEffect,useMemo, useState } from "react";
 import { getCustomComponents, getPageConfigs, createCustomComponent, updatePageConfig, initializeDefaults } from "../../../../server/actions/admin";
+import { clearOnboardingCache } from "../../onboarding/_hooks/useOnboardingData";
 import type { CustomComponent, PageConfig, ComponentType } from "../../../types/components";
 
 export function useAdminConfig(){
@@ -49,12 +50,19 @@ export function useAdminConfig(){
         if (!response.success) {
             throw new Error(response.error || "Failed to create component");
         }
+        
+        // Clear onboarding cache so new components are available immediately
+        clearOnboardingCache();
+        
         await refresh();
     },[refresh]);
 
     const savePageConfig = useCallback(async (page: number, components: string[]) => {
         const res = await updatePageConfig(page, components);
         if (!res.success) throw new Error(res.error || "Failed to update page config");
+        
+        // Clear onboarding cache so changes are reflected immediately
+        clearOnboardingCache();
         
         // Update local state instead of full refresh
         setPageConfigs(prev => {

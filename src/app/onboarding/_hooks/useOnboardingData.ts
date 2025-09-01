@@ -14,7 +14,14 @@ const cache = {
   pageConfigs: null as PageConfig[] | null,
   timestamp: 0
 };
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 30 * 1000; // 30 seconds - shorter cache for better responsiveness
+
+// Function to clear cache (can be called from admin)
+export const clearOnboardingCache = () => {
+  cache.components = null;
+  cache.pageConfigs = null;
+  cache.timestamp = 0;
+};
 
 export function useOnboardingData(stepNumber: number) {
   const router = useRouter();
