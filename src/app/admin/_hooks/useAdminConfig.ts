@@ -51,7 +51,6 @@ export function useAdminConfig(){
             throw new Error(response.error || "Failed to create component");
         }
         
-        // Clear onboarding cache so new components are available immediately
         clearOnboardingCache();
         
         await refresh();
@@ -61,7 +60,6 @@ export function useAdminConfig(){
         const res = await updatePageConfig(page, components);
         if (!res.success) throw new Error(res.error || "Failed to update page config");
         
-        // Clear onboarding cache so changes are reflected immediately
         clearOnboardingCache();
         
         // Update local state instead of full refresh
