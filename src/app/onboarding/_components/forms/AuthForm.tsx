@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button, Input, Card } from '../../../components/ui';
+import { Button, Input, Card } from '../../../../components/ui';
 
 type Mode = 'signin' | 'signup';
 
@@ -54,7 +54,7 @@ const AuthForm: React.FC<AuthFormUIProps> = ({
           label="Email"
           type="email"
           value={values.email}
-          onChange={e => onChange('email', e.currentTarget.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange('email', e.currentTarget.value)}
           error={errors.email || undefined}
           required
           autoComplete="email"
@@ -64,7 +64,7 @@ const AuthForm: React.FC<AuthFormUIProps> = ({
           label="Password"
           type="password"
           value={values.password}
-          onChange={e => onChange('password', e.currentTarget.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange('password', e.currentTarget.value)}
           error={errors.password || undefined}
           required
           autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
@@ -75,7 +75,7 @@ const AuthForm: React.FC<AuthFormUIProps> = ({
             label="Confirm Password"
             type="password"
             value={values.confirmPassword}
-            onChange={e => onChange('confirmPassword', e.currentTarget.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange('confirmPassword', e.currentTarget.value)}
             error={errors.confirmPassword || undefined}
             required
             autoComplete="new-password"

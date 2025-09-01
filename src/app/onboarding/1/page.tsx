@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import AuthForm from '../_components/AuthForm';
+import AuthForm from '../_components/forms/AuthForm';
 import { useAuthForm } from '../_hooks/useAuthForm';
 import { signInUser, signUpUser } from '../../../../server/actions/auth';
 import { useRouter } from 'next/navigation';

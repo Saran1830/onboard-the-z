@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
+import { useToast } from "../../../components/Toast";
 import type { CustomComponent } from"../../../types/components";
 
 type Props = {
@@ -15,7 +16,7 @@ export default function PageAssignmentPanel({
 }: Props) {
   const [selection, setSelection] = useState<string[]>(initialSelection);
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const { success, error } = useToast();
 
   const hasComponents = selection.length > 0;
   const sorted = useMemo(
@@ -66,14 +67,20 @@ export default function PageAssignmentPanel({
         <button
           onClick={async () => {
             setSaving(true);
-            try { await onSave(selection); setSaved(true); setTimeout(() => setSaved(false), 1200); }
-            finally { setSaving(false); }
+            try { 
+              await onSave(selection); 
+              success('Configuration Saved', `Page ${page} configuration has been updated successfully.`);
+            } catch (err) {
+              error('Save Failed', `Failed to save Page ${page} configuration: ${err instanceof Error ? err.message : 'Unknown error'}`);
+            } finally { 
+              setSaving(false); 
+            }
           }}
           disabled={!hasComponents || saving}
           className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center
             ${hasComponents ? " bg-pink-200 btn-primary hover:-translate-y-0.5 hover:shadow-lg" : "bg-gray-200 text-gray-500 cursor-not-allowed opacity-50"}`}
         >
-          {saving ? "Saving..." : saved ? " Saved!" : "Save Configuration"}
+          {saving ? "Saving..." : "Save Configuration"}
         </button>
 
         {!hasComponents && (

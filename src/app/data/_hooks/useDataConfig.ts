@@ -6,23 +6,28 @@ import type {UserProfileFlat} from "../../../types/index";
 
 export function useDataConfig() {
     const [profiles, setProfiles] = useState<UserProfileFlat[]>([]);
-      const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    
     useEffect(() => {
-    (async () => {
-      try {
-        const data = await getAllUserProfiles();
-          // 🔍 Log the fetched data
+        (async () => {
+            try {
+                setLoading(true);
+                const data = await getAllUserProfiles();
+                // 🔍 Log the fetched data
                 console.log("useDataConfig - fetched data:", data);
                 console.log("useDataConfig - data length:", data.length);
-                      
-        setProfiles(data);
-      } catch (err) {
-        setError(
-          `Error loading profiles: ${err instanceof Error ? err.message : "Unknown error"}`
-        );
-      } 
-    })();
-  }, []);
+                
+                setProfiles(data);
+            } catch (err) {
+                setError(
+                    `Error loading profiles: ${err instanceof Error ? err.message : "Unknown error"}`
+                );
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
     const allKeys = useMemo(() => {
     const keys = new Set<string>();
     for (const p of profiles) {
@@ -34,8 +39,9 @@ export function useDataConfig() {
     return Array.from(keys);
   }, [profiles]);
     return {
-       profiles,
+        profiles,
         allKeys,
+        loading,
         error
     }
 }

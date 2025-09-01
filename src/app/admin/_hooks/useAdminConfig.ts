@@ -53,10 +53,25 @@ export function useAdminConfig(){
     },[refresh]);
 
     const savePageConfig = useCallback(async (page: number, components: string[]) => {
-    const res = await updatePageConfig(page, components);
-    if (!res.success) throw new Error(res.error || "Failed to update page config");
-    await refresh();
-  }, [refresh]);
+        const res = await updatePageConfig(page, components);
+        if (!res.success) throw new Error(res.error || "Failed to update page config");
+        
+        // Update local state instead of full refresh
+        setPageConfigs(prev => {
+            const existing = prev.find(cfg => cfg.page === page);
+            if (existing) {
+                return prev.map(cfg => cfg.page === page ? { ...cfg, components, updated_at: new Date().toISOString() } : cfg);
+            } else {
+                return [...prev, { 
+                    id: `page-${page}`, 
+                    page, 
+                    title: `Page ${page}`,
+                    components,
+                    updated_at: new Date().toISOString()
+                }];
+            }
+        });
+    }, []);
 
     return {
         state: {

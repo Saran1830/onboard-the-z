@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import GlassBackground from "../components/GlassBackground";
+import { ToastProvider, ToastContainer } from "../components/Toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +38,12 @@ export default function RootLayout({
           overflowX: "hidden"
         }}
       >
-        <GlassBackground />
-        <Navbar />
-        <main style={{ width: "100%" }}>{children}</main>
+        <ToastProvider>
+          <GlassBackground />
+          <Navbar />
+          <main style={{ width: "100%" }}>{children}</main>
+          <ToastContainer />
+        </ToastProvider>
       </body>
     </html>
   );

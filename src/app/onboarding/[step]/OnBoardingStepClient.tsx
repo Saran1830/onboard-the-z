@@ -75,7 +75,13 @@ export default function OnboardingStepClient({ stepNumber }: { stepNumber: numbe
         setSubmitting(false);
         return;
       }
-      router.push(stepNumber >= totalSteps ? '/onboarding/1' : `/onboarding/${stepNumber + 1}`);
+      
+      // If this is the last step, redirect to success page
+      if (stepNumber >= totalSteps) {
+        router.push('/onboarding/success');
+      } else {
+        router.push(`/onboarding/${stepNumber + 1}`);
+      }
     } catch {
       setFormErrors(prev => ({ ...prev, _form: 'Network or server error' }));
       setSubmitting(false);
