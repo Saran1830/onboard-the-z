@@ -10,9 +10,9 @@ A modern, full-stack application built with Next.js 15 and TypeScript that enabl
 
 ## Live Demo
 
-- **Application**: [Deploy URL Here]
-- **Admin Panel**: [Deploy URL]/admin
-- **Data View**: [Deploy URL]/data
+- **Application**: https://onboard-the-z-kjx4.vercel.app/onboarding/1
+- **Admin Panel**: [[Deploy URL]](https://onboard-the-z-kjx4.vercel.app/onboarding/1)/admin
+- **Data View**: [[Deploy URL]](https://onboard-the-z-kjx4.vercel.app/onboarding/1)/data
 
 ## Features
 
