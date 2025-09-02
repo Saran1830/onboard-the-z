@@ -36,15 +36,18 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.1.12",
     "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "chai": "^6.0.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
     "mocha": "^10.0.0",
+    "tailwindcss": "^4.1.12",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
@@ -52,7 +55,6 @@
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
-  "optionalDependencies": {},
   "overrides": {
     "react": "19.1.0",
     "react-dom": "19.1.0"
