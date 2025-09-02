@@ -194,7 +194,7 @@ vercel --prod
 - **Business Logic** - Core functionality testing
 - **Validation** - Form validation testing
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Next.js team for the amazing framework
 - Supabase for the backend infrastructure
