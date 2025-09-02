@@ -1,13 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from 'next/headers'
-import { env } from '../../../src/config/env';
 
-// Use environment configuration with fallbacks
-const supabaseUrl = env.supabase.url;
-const supabaseKey = env.supabase.serviceRoleKey || env.supabase.anonKey;
-const supabasePublicUrl = env.supabase.url;
-const supabaseAnonKey = env.supabase.anonKey;
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_KEY!;
+const supabasePublicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabaseServerClient = () => createClient(supabaseUrl, supabaseKey);
 
