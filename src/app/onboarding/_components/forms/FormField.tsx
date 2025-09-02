@@ -1,10 +1,11 @@
 import React from 'react';
 import { CustomComponent } from '../../../../types/components';
+import AddressFieldGroup from './AddressFieldGroup';
 
 interface FormFieldProps {
   component: CustomComponent;
-  value: string;
-  onChange: (name: string, value: string) => void;
+  value: string | object; // Updated to handle address objects
+  onChange: (name: string, value: string | object) => void; // Updated to handle address objects
   error?: string;
   className?: string;
 }
@@ -28,6 +29,17 @@ const FormField: React.FC<FormFieldProps> = ({
 
   const renderField = () => {
     switch (component.type) {
+      case 'address':
+        return (
+          <AddressFieldGroup
+            value={value as Record<string, string> || {}}
+            onChange={(addressData) => onChange(component.name, addressData)}
+            errors={error ? { general: error } : {}}
+            required={component.required}
+            label={component.label} // Pass the component's label dynamically
+          />
+        );
+
       case 'text':
         return (
           <input
@@ -36,7 +48,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -50,7 +62,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={`${baseInputClass} min-h-[100px] resize-vertical`}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -65,7 +77,7 @@ const FormField: React.FC<FormFieldProps> = ({
             id={component.name}
             name={component.name}
             required={component.required}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -80,7 +92,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -95,7 +107,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -110,7 +122,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder || "(555) 123-4567"}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -125,7 +137,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder || "https://example.com"}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -140,7 +152,7 @@ const FormField: React.FC<FormFieldProps> = ({
             name={component.name}
             required={component.required}
             placeholder={component.placeholder}
-            value={value}
+            value={value as string}
             onChange={e => onChange(component.name, e.target.value)}
             className={baseInputClass}
             aria-describedby={error ? `${component.name}-error` : undefined}
@@ -151,17 +163,20 @@ const FormField: React.FC<FormFieldProps> = ({
 
   return (
     <div className={`form-field ${className}`}>
-      <label 
-        htmlFor={component.name}
-        className="block font-medium text-gray-800 mb-2 text-sm sm:text-base tracking-wide"
-      >
-        {component.label}
-        {component.required && (
-          <span className="text-red-500 ml-1" title="Required field">*</span>
-        )}
-      </label>
+      {/* Only show label for non-address fields since AddressFieldGroup has its own fieldset/legend */}
+      {component.type !== 'address' && (
+        <label 
+          htmlFor={component.name}
+          className="block font-medium text-gray-800 mb-2 text-sm sm:text-base tracking-wide"
+        >
+          {component.label}
+          {component.required && (
+            <span className="text-red-500 ml-1" title="Required field">*</span>
+          )}
+        </label>
+      )}
       {renderField()}
-      {error && (
+      {error && component.type !== 'address' && (
         <div 
           id={`${component.name}-error`}
           className="text-red-600 text-sm mt-2 flex items-center"

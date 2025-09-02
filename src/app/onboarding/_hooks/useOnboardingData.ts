@@ -14,7 +14,7 @@ const cache = {
   pageConfigs: null as PageConfig[] | null,
   timestamp: 0
 };
-const CACHE_DURATION = 10 * 1000; // 10 seconds - shorter cache for better responsiveness
+const CACHE_DURATION = 10 * 1000; // 30 seconds - shorter cache for better responsiveness
 
 // Function to clear cache (can be called from admin)
 export const clearOnboardingCache = () => {

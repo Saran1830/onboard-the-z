@@ -1,5 +1,5 @@
 export const COMPONENT_TYPES = [
-  "text", "textarea", "date", "number", "email", "phone", "url",
+  "text", "textarea", "date", "number", "email", "phone", "url", "address",
 ] as const;
 export type ComponentType = (typeof COMPONENT_TYPES)[number];
 

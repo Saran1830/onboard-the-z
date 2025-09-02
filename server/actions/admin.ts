@@ -24,7 +24,7 @@ export async function createCustomComponent(
   component: {
     name: string
     label: string
-    type: "number" | "textarea" | "text" | "email" | "date" | "phone" | "url"
+    type: "number" | "textarea" | "text" | "email" | "date" | "phone" | "url" | "address"
     required: boolean
     placeholder: string
     options: string[] | null

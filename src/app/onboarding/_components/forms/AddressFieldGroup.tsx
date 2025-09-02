@@ -5,6 +5,7 @@ interface AddressFieldGroupProps {
   onChange: (addressData: Record<string, string>) => void;
   errors: Record<string, string>;
   required?: boolean;
+  label?: string; // Add dynamic label prop
   className?: string;
 }
 
@@ -13,6 +14,7 @@ const AddressFieldGroup: React.FC<AddressFieldGroupProps> = ({
   onChange,
   errors = {},
   required = false,
+  label = "Address Information", // Default label with dynamic option
   className = ""
 }) => {
   const updateField = (field: string, fieldValue: string) => {
@@ -35,7 +37,7 @@ const AddressFieldGroup: React.FC<AddressFieldGroupProps> = ({
   return (
     <fieldset className={`address-field-group border border-gray-200 rounded-lg p-4 bg-white/40 ${className}`}>
       <legend className="font-medium text-gray-800 px-2 text-sm sm:text-base tracking-wide">
-        Address Information
+        {label}
         {required && <span className="text-red-500 ml-1" title="Required field">*</span>}
       </legend>
       

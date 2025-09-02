@@ -19,7 +19,7 @@ const mockAdminService = {
   builtInComponents: [
     { id: '1', name: 'aboutMe', label: 'About Me', type: 'textarea', required: false },
     { id: '2', name: 'birthdate', label: 'Birth Date', type: 'date', required: false },
-    { id: '3', name: 'address', label: 'Address', type: 'address-group', required: false }
+    { id: '3', name: 'address', label: 'Address', type: 'address', required: false }
   ],
 
   // Default page configurations
@@ -131,7 +131,7 @@ describe('Admin Page Management', () => {
     it('should include address component', () => {
       const address = mockAdminService.builtInComponents.find(c => c.name === 'address')
       expect(address).to.exist
-      expect(address?.type).to.equal('address-group')
+      expect(address?.type).to.equal('address')
       expect(address?.label).to.equal('Address')
     })
   })
