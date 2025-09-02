@@ -18,41 +18,43 @@
     "test:watch": "npm run test -- --watch",
     "test:all": "npm run test:utils && npm run test:auth && npm run test:api && npm run test:admin && npm run test:onboarding",
     "github:check": "node scripts/check-github-ready.js",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "clean": "rm -rf node_modules package-lock.json && npm install",
+    "deps:check": "npx depcheck --ignores='@types/*,eslint-*,mocha,chai,ts-node,typescript,@eslint/*'",
+    "deps:audit": "npm audit --audit-level=high"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.56.1",
     "next": "15.5.0",
-    "node-fetch": "^2.7.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@testing-library/jest-dom": "^6.8.0",
-    "@testing-library/react": "^16.3.0",
     "@types/chai": "^5.2.2",
-    "@types/dotenv": "^6.1.1",
-    "@types/jest": "^30.0.0",
-    "@types/jsdom": "^21.1.7",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20",
-    "@types/node-fetch": "^2.6.13",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "chai": "^6.0.1",
-    "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
-    "jest": "^30.0.5",
-    "jest-coverage-badges": "^1.1.2",
-    "jest-environment-node": "^30.0.5",
-    "jsdom": "^26.1.0",
     "mocha": "^10.0.0",
-    "tailwindcss": "^4",
-    "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5"
+  },
+  "peerDependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "optionalDependencies": {},
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   }
 }

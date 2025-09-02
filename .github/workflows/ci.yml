@@ -96,7 +96,7 @@ jobs:
       run: npx tsc --noEmit --project tsconfig.json
 
     - name: Check for unused dependencies
-      run: npx depcheck --ignores="@types/*,eslint-*,jest,mocha,chai"
+      run: npx depcheck --ignores="@types/*,eslint-*,mocha,chai,ts-node,typescript,@eslint/*"
       continue-on-error: true
 
   build:
