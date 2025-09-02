@@ -1,62 +1,65 @@
 'use server'
 
-import { ComponentModel } from '../models/Component'
+import { ComponentService } from '../services/ComponentService'
 import { revalidatePath } from 'next/cache'
+import type { 
+  AdminResult, 
+  ComponentCreationData 
+} from '../types/actions'
 
-export interface AdminResult {
-  success: boolean
-  error?: string
-  data?: unknown
-}
+const componentService = new ComponentService()
 
 export async function getCustomComponents() {
-  const componentModel = new ComponentModel()
-  
   try {
-    return await componentModel.getAllCustomComponents()
+    const result = await componentService.getAllCustomComponents()
+
+    if (result.success) {
+      return result.data || []
+    } else {
+      return []
+    }
   } catch (error) {
-    console.error('Error fetching custom components:', error)
+    console.error('Admin action getCustomComponents error:', error)
     return []
   }
 }
 
 export async function createCustomComponent(
-  component: {
-    name: string
-    label: string
-    type: "number" | "textarea" | "text" | "email" | "date" | "phone" | "url" | "address"
-    required: boolean
-    placeholder: string
-    options: string[] | null
-  }
+  component: ComponentCreationData
 ): Promise<AdminResult> {
-  const componentModel = new ComponentModel()
-  
   try {
-    const result = await componentModel.createCustomComponent(component)
-    
+    const result = await componentService.createCustomComponent(component)
+
     if (result.success) {
       revalidatePath('/admin')
       return result
     } else {
-      return result
+      return {
+        success: false,
+        error: result.error || 'Failed to create component',
+        validationErrors: result.validationErrors
+      }
     }
   } catch (error) {
-    console.error('Error creating custom component:', error)
+    console.error('Admin action createCustomComponent error:', error)
     return {
       success: false,
-      error: 'Failed to create component'
+      error: error instanceof Error ? error.message : 'Create component operation failed'
     }
   }
 }
 
 export async function getPageConfigs() {
-  const componentModel = new ComponentModel()
-  
   try {
-    return await componentModel.getAllPageConfigs()
+    const result = await componentService.getAllPageConfigs()
+
+    if (result.success) {
+      return result.data || []
+    } else {
+      return []
+    }
   } catch (error) {
-    console.error('Error fetching page configs:', error)
+    console.error('Admin action getPageConfigs error:', error)
     return []
   }
 }
@@ -65,44 +68,47 @@ export async function updatePageConfig(
   page: number,
   components: string[]
 ): Promise<AdminResult> {
-  const componentModel = new ComponentModel()
-  
   try {
-    const result = await componentModel.updatePageConfig(page, components)
-    
+    const result = await componentService.updatePageConfig(page, components)
+
     if (result.success) {
       revalidatePath('/admin')
       revalidatePath('/onboarding')
       return result
     } else {
-      return result
+      return {
+        success: false,
+        error: result.error || 'Failed to update page config',
+        validationErrors: result.validationErrors
+      }
     }
   } catch (error) {
-    console.error('Error updating page config:', error)
+    console.error('Admin action updatePageConfig error:', error)
     return {
       success: false,
-      error: 'Failed to update page config'
+      error: error instanceof Error ? error.message : 'Update page config operation failed'
     }
   }
 }
 
 export async function initializeDefaults(): Promise<AdminResult> {
-  const componentModel = new ComponentModel()
-  
   try {
-    const result = await componentModel.initializeDefaults()
-    
+    const result = await componentService.initializeDefaults()
+
     if (result.success) {
       revalidatePath('/admin')
       return result
     } else {
-      return result
+      return {
+        success: false,
+        error: result.error || 'Failed to initialize defaults'
+      }
     }
   } catch (error) {
-    console.error('Error initializing defaults:', error)
+    console.error('Admin action initializeDefaults error:', error)
     return {
       success: false,
-      error: 'Failed to initialize defaults'
+      error: error instanceof Error ? error.message : 'Initialize defaults operation failed'
     }
   }
 }

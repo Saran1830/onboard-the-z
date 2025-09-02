@@ -226,7 +226,7 @@ describe('Utility Functions', () => {
 
   describe('Component ID Generation', () => {
     it('should generate valid component IDs', () => {
-      const id1 = utils.generateComponentId('aboutMe')
+      const id1 = utils.generateComponentId('aboutme')
       const id2 = utils.generateComponentId('birth-date')
       
       expect(id1).to.match(/^aboutme_\d+$/)
@@ -242,7 +242,7 @@ describe('Utility Functions', () => {
 
   describe('Component Name Validation', () => {
     it('should validate correct component names', () => {
-      expect(utils.isValidComponentName('aboutMe')).to.be.true
+      expect(utils.isValidComponentName('aboutme')).to.be.true
       expect(utils.isValidComponentName('birth_date')).to.be.true
       expect(utils.isValidComponentName('phoneNumber123')).to.be.true
     })

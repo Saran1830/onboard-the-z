@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { TOAST_DURATIONS, ID_GENERATION } from '../../constants/timing';
 
 export interface Toast {
   id: string;
@@ -34,11 +35,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
-    const id = Math.random().toString(36).substr(2, 9);
+    const id = Math.random().toString(ID_GENERATION.base).substr(ID_GENERATION.startIndex, ID_GENERATION.length);
     const newToast: Toast = {
       ...toast,
       id,
-      duration: toast.duration ?? 3000,
+      duration: toast.duration ?? TOAST_DURATIONS.medium,
     };
 
     setToasts(prev => [...prev, newToast]);

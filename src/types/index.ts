@@ -29,7 +29,7 @@ export interface Address {
 
 export interface FormData {
   readonly email?: string;
-  readonly aboutMe?: string;
+  readonly aboutme?: string;
   readonly birthdate?: string;
   readonly address?: Address;
   [key: string]: unknown;

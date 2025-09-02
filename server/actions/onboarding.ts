@@ -1,110 +1,75 @@
 'use server'
 
-import { UserModel } from '../models/User'
+import { UserService } from '../services/UserService'
 import { revalidatePath } from 'next/cache'
+import type { UserProfileFlat } from '../../src/types/index'
+import type { 
+  OnboardingResult
+} from '../types/actions'
 
-import type { UserProfile, UserProfileFlat } from '../../src/types/index'
-
-export interface OnboardingResult {
-  success: boolean
-  error?: string
-  data?: Record<string, unknown>
-}
+const userService = new UserService()
 
 export async function submitOnboardingStep(
   step: string,
   formData: Record<string, unknown>
 ): Promise<OnboardingResult> {
-  const userModel = new UserModel()
-  
   try {
-    const stepNum = parseInt(step)
-    const { email, ...profileData } = formData
+    const result = await userService.submitOnboardingStep(step, formData)
 
-    if (typeof email !== 'string' || !email) {
+    if (result.success) {
+      revalidatePath('/onboarding')
+      revalidatePath('/data')
+      
+      return {
+        success: true,
+        data: result.data
+      }
+    } else {
       return {
         success: false,
-        error: 'Email is required'
+        error: result.error || 'Server error occurred',
+        validationErrors: result.validationErrors
       }
     }
-
-    // Get user by email
-    const user = await userModel.findByEmail(email)
-
-    if (!user) {
-      return {
-        success: false,
-        error: 'User not found'
-      }
-    }
-
-    // Update user profile with step data
-    const profile = await userModel.createOrUpdateProfile(user.id, {
-      ...profileData,
-      last_updated: new Date().toISOString()
-    })
-
-    if (!profile) {
-      return {
-        success: false,
-        error: 'Failed to update profile'
-      }
-    }
-
-    revalidatePath('/onboarding')
-    revalidatePath('/data')
-    
-    return {
-      success: true,
-      data: { step: stepNum }
-    }
-
   } catch (error) {
-    console.error('Error submitting onboarding step:', error)
+    console.error('Onboarding action submitOnboardingStep error:', error)
     return {
       success: false,
-      error: 'Server error occurred'
+      error: error instanceof Error ? error.message : 'Submit onboarding step operation failed'
     }
   }
 }
 
 export async function getUserProfile(email: string): Promise<OnboardingResult> {
-  const userModel = new UserModel()
-  
   try {
-    // Get user and their profile
-    const user = await userModel.findByEmail(email)
-
-    if (!user) {
-      return {
-        success: true,
-        data: {}
-      }
-    }
-
-    const profile = await userModel.getProfile(user.id)
+    const result = await userService.getUserProfile(email)
 
     return {
-      success: true,
-      data: profile?.profile_data || {}
+      success: result.success,
+      data: result.data || {},
+      error: result.error,
+      validationErrors: result.validationErrors
     }
-
   } catch (error) {
-    console.error('Error fetching user profile:', error)
+    console.error('Onboarding action getUserProfile error:', error)
     return {
-      success: true,
-      data: {}
+      success: false,
+      error: error instanceof Error ? error.message : 'Get user profile operation failed'
     }
   }
 }
 
 export async function getAllUserProfiles(): Promise<UserProfileFlat[] | []> {
-  const userModel = new UserModel();
   try {
-    const rows = await userModel.getAllProfiles(); 
-    return rows ?? [];
+    const result = await userService.getAllUserProfiles()
+
+    if (result.success) {
+      return result.data || []
+    } else {
+      return []
+    }
   } catch (error) {
-    console.error("Error fetching user profiles:", error);
-    return [];
+    console.error('Onboarding action getAllUserProfiles error:', error)
+    return []
   }
 }

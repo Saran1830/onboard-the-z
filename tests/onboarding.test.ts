@@ -5,7 +5,7 @@ import { expect } from 'chai'
 
 // Mock data structures for onboarding flow
 interface FormData {
-  aboutMe?: string
+  aboutme?: string
   birthdate?: string
   address?: {
     street: string
@@ -22,7 +22,7 @@ const mockOnboardingService = {
     switch (stepNumber) {
       case 2:
         // Step 2 validation based on configured components
-        if (formData.aboutMe !== undefined && formData.aboutMe.trim().length === 0) return false
+        if (formData.aboutme !== undefined && formData.aboutme.trim().length === 0) return false
         if (formData.birthdate !== undefined && !formData.birthdate) return false
         if (formData.address !== undefined) {
           const { street, city, state, zipCode, country } = formData.address
@@ -31,7 +31,7 @@ const mockOnboardingService = {
         return true
       case 3:
         // Step 3 validation based on configured components
-        if (formData.aboutMe !== undefined && formData.aboutMe.trim().length === 0) return false
+        if (formData.aboutme !== undefined && formData.aboutme.trim().length === 0) return false
         if (formData.birthdate !== undefined && !formData.birthdate) return false
         if (formData.address !== undefined) {
           const { street, city, state, zipCode, country } = formData.address
@@ -46,7 +46,7 @@ const mockOnboardingService = {
   getStepComponents: (stepNumber: number): string[] => {
     // Mock configuration - these would come from admin settings
     const stepConfigs: Record<number, string[]> = {
-      2: ['aboutMe', 'birthdate'],
+      2: ['aboutme', 'birthdate'],
       3: ['address']
     }
     return stepConfigs[stepNumber] || []
@@ -70,7 +70,7 @@ describe('Onboarding Flow', () => {
     })
 
     it('should return correct components for each step', () => {
-      expect(mockOnboardingService.getStepComponents(2)).to.deep.equal(['aboutMe', 'birthdate'])
+      expect(mockOnboardingService.getStepComponents(2)).to.deep.equal(['aboutme', 'birthdate'])
       expect(mockOnboardingService.getStepComponents(3)).to.deep.equal(['address'])
       expect(mockOnboardingService.getStepComponents(1)).to.deep.equal([])
     })
@@ -79,17 +79,17 @@ describe('Onboarding Flow', () => {
   describe('Form Validation', () => {
     describe('About Me Component', () => {
       it('should validate non-empty about me text', () => {
-        const formData: FormData = { aboutMe: 'This is my story...' }
+        const formData: FormData = { aboutme: 'This is my story...' }
         expect(mockOnboardingService.validateStep(2, formData)).to.be.true
       })
 
       it('should reject empty about me text', () => {
-        const formData: FormData = { aboutMe: '' }
+        const formData: FormData = { aboutme: '' }
         expect(mockOnboardingService.validateStep(2, formData)).to.be.false
       })
 
       it('should reject whitespace-only about me text', () => {
-        const formData: FormData = { aboutMe: '   ' }
+        const formData: FormData = { aboutme: '   ' }
         expect(mockOnboardingService.validateStep(2, formData)).to.be.false
       })
     })
@@ -138,7 +138,7 @@ describe('Onboarding Flow', () => {
   describe('Step Submission', () => {
     it('should successfully submit valid step 2 data', async () => {
       const formData: FormData = {
-        aboutMe: 'I am a software developer...',
+        aboutme: 'I am a software developer...',
         birthdate: '1990-05-15'
       }
       const result = await mockOnboardingService.submitStep(2, formData)
@@ -160,7 +160,7 @@ describe('Onboarding Flow', () => {
     })
 
     it('should fail to submit invalid data', async () => {
-      const formData: FormData = { aboutMe: '' }
+      const formData: FormData = { aboutme: '' }
       const result = await mockOnboardingService.submitStep(2, formData)
       expect(result.success).to.be.false
       expect(result.message).to.equal('Validation failed')

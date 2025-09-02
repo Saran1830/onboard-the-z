@@ -1,11 +1,12 @@
 'use client'
 
 import React,{useState} from 'react';
-import GlassCard from '../../components/GlassCard';
-import { useAdminConfig } from "./_hooks/useAdminConfig";
-import CreateComponentModal from "./_components/CreateComponentModal";
-import PageAssignmentPanel from "./_components/PageAssignmentPanel";
-import ComponentTable from './_components/ComponentTable';
+import GlassCard from '../../components/ui/GlassCard';
+import { useAdminConfig } from "../../components/Hooks/admin/useAdminConfig";
+import CreateComponentModal from "../../components/Modal/CreateComponentModal";
+import PageAssignmentPanel from "../../components/Panels/PageAssignmentPanel";
+import ComponentTable from '../../components/Tables/ComponentTable';
+import { PAGE_TITLES } from '../../constants/ui';
 
 
 const AdminPage: React.FC = () => {
@@ -25,7 +26,7 @@ const AdminPage: React.FC = () => {
 
   return (
     <GlassCard style={{ width: "90%", margin: "auto" }}>
-      <h1 className='text-2xl font-bold  text-center'>Admin Page</h1>
+      <h1 className='text-2xl font-bold  text-center'>{PAGE_TITLES.ADMIN}</h1>
         <h2 className='text-l font-bold mb-8 text-center'>Onboarding component Management Page</h2>
         
         {/* 1) Create Component */}

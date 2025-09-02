@@ -1,34 +1,32 @@
 import { isString, isNumber } from './typeGuards';
+import { 
+  VALIDATION_REGEX, 
+  HTML_ESCAPE_MAP, 
+  URL_PROTOCOLS 
+} from './constants';
 
 // String sanitization
 export function sanitizeString(input: unknown): string {
   if (!isString(input)) return '';
   return input
     .trim()
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
-    .replace(/[<>'"&]/g, (char) => { // Escape HTML characters
-      switch (char) {
-        case '<': return '&lt;';
-        case '>': return '&gt;';
-        case '"': return '&quot;';
-        case "'": return '&#x27;';
-        case '&': return '&amp;';
-        default: return char;
-      }
+    .replace(VALIDATION_REGEX.scriptTag, '') // Remove script tags
+    .replace(VALIDATION_REGEX.htmlChars, (char) => { // Escape HTML characters
+      return HTML_ESCAPE_MAP[char as keyof typeof HTML_ESCAPE_MAP] || char;
     });
 }
 
 // Email sanitization
 export function sanitizeEmail(input: unknown): string {
   const sanitized = sanitizeString(input).toLowerCase();
-  return sanitized.replace(/[^a-z0-9@._-]/g, '');
+  return sanitized.replace(VALIDATION_REGEX.emailChars, '');
 }
 
 // Number sanitization
 export function sanitizeNumber(input: unknown): number | null {
   if (isNumber(input)) return input;
   if (isString(input)) {
-    const parsed = parseFloat(input.replace(/[^0-9.-]/g, ''));
+    const parsed = parseFloat(input.replace(VALIDATION_REGEX.numberChars, ''));
     return isNaN(parsed) ? null : parsed;
   }
   return null;
@@ -37,7 +35,7 @@ export function sanitizeNumber(input: unknown): number | null {
 // Phone sanitization
 export function sanitizePhone(input: unknown): string {
   if (!isString(input)) return '';
-  return input.replace(/[^0-9+()-.\s]/g, '');
+  return input.replace(VALIDATION_REGEX.phoneChars, '');
 }
 
 // URL sanitization
@@ -46,8 +44,8 @@ export function sanitizeUrl(input: unknown): string {
   const sanitized = input.trim();
   
   // Add protocol if missing
-  if (sanitized && !sanitized.match(/^https?:\/\//)) {
-    return `https://${sanitized}`;
+  if (sanitized && !sanitized.match(VALIDATION_REGEX.url)) {
+    return `${URL_PROTOCOLS.default}${sanitized}`;
   }
   
   return sanitized;
@@ -59,9 +57,9 @@ export function sanitizeComponentName(input: unknown): string {
   return input
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9_]/g, '_')
-    .replace(/_{2,}/g, '_')
-    .replace(/^_|_$/g, '');
+    .replace(VALIDATION_REGEX.componentNameChars, '_')
+    .replace(VALIDATION_REGEX.multipleUnderscores, '_')
+    .replace(VALIDATION_REGEX.leadingTrailingUnderscores, '');
 }
 
 // Generic field sanitization based on type

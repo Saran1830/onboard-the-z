@@ -51,7 +51,7 @@ const mockApiEndpoints = {
       return {
         success: true,
         data: {
-          aboutMe: 'Sample about me',
+          aboutme: 'Sample about me',
           birthdate: '1990-05-15',
           address: {
             street: '123 Main St',
@@ -71,7 +71,7 @@ const mockApiEndpoints = {
       return {
         success: true,
         data: [
-          { id: '1', name: 'aboutMe', label: 'About Me', type: 'textarea', required: false, placeholder: 'Tell us about yourself' },
+          { id: '1', name: 'aboutme', label: 'About Me', type: 'textarea', required: false, placeholder: 'Tell us about yourself' },
           { id: '2', name: 'birthdate', label: 'Birth Date', type: 'date', required: false, placeholder: '' },
           { id: '3', name: 'address', label: 'Address', type: 'address-group', required: false, placeholder: '' }
         ]
@@ -96,7 +96,7 @@ const mockApiEndpoints = {
       return {
         success: true,
         data: [
-          { id: 'page2', page: 2, components: ['aboutMe', 'birthdate'] },
+          { id: 'page2', page: 2, components: ['aboutme', 'birthdate'] },
           { id: 'page3', page: 3, components: ['address'] }
         ]
       }
@@ -127,7 +127,7 @@ const mockApiEndpoints = {
             id: 'user_1',
             email: 'john@example.com',
             profile_data: {
-              aboutMe: 'I am a software developer',
+              aboutme: 'I am a software developer',
               birthdate: '1990-05-15',
               address: {
                 street: '123 Main St',
@@ -192,7 +192,7 @@ describe('API Endpoints', () => {
       it('should submit valid onboarding step', async () => {
         const response = await mockApiEndpoints['/api/onboarding/submit'].post({
           step: '2',
-          data: { aboutMe: 'I am a developer', birthdate: '1990-05-15' }
+          data: { aboutme: 'I am a developer', birthdate: '1990-05-15' }
         })
         expect(response.success).to.be.true
         expect(response.message).to.equal('Step submitted successfully')
@@ -201,7 +201,7 @@ describe('API Endpoints', () => {
       it('should reject invalid step number', async () => {
         const response = await mockApiEndpoints['/api/onboarding/submit'].post({
           step: '5',
-          data: { aboutMe: 'test' }
+          data: { aboutme: 'test' }
         })
         expect(response.success).to.be.false
         expect(response.error).to.equal('Invalid step number')
@@ -224,7 +224,7 @@ describe('API Endpoints', () => {
           step: '2'
         })
         expect(response.success).to.be.true
-        expect(response.data).to.have.property('aboutMe')
+        expect(response.data).to.have.property('aboutme')
         expect(response.data).to.have.property('birthdate')
         expect(response.data).to.have.property('address')
       })
@@ -246,7 +246,7 @@ describe('API Endpoints', () => {
         expect(response.data).to.have.length(3)
         
         const componentNames = response.data?.map((c: any) => c.name)
-        expect(componentNames).to.include('aboutMe')
+        expect(componentNames).to.include('aboutme')
         expect(componentNames).to.include('birthdate')
         expect(componentNames).to.include('address')
       })
@@ -309,11 +309,11 @@ describe('API Endpoints', () => {
       it('should update page configuration with valid data', async () => {
         const response = await mockApiEndpoints['/api/admin/page-components'].post({
           page: 2,
-          components: ['aboutMe', 'birthdate']
+          components: ['aboutme', 'birthdate']
         })
         expect(response.success).to.be.true
         expect(response.data?.page).to.equal(2)
-        expect(response.data?.components).to.deep.equal(['aboutMe', 'birthdate'])
+        expect(response.data?.components).to.deep.equal(['aboutme', 'birthdate'])
       })
 
       it('should enforce business rule: page must have at least one component', async () => {
@@ -328,7 +328,7 @@ describe('API Endpoints', () => {
       it('should reject invalid page numbers', async () => {
         const response = await mockApiEndpoints['/api/admin/page-components'].post({
           page: 1,
-          components: ['aboutMe']
+          components: ['aboutme']
         })
         expect(response.success).to.be.false
         expect(response.error).to.equal('Invalid page number. Only pages 2 and 3 are configurable.')
@@ -344,7 +344,7 @@ describe('API Endpoints', () => {
         expect(response.data).to.be.an('array')
         expect(response.data?.[0]).to.have.property('email')
         expect(response.data?.[0]).to.have.property('profile_data')
-        expect(response.data?.[0].profile_data).to.have.property('aboutMe')
+        expect(response.data?.[0].profile_data).to.have.property('aboutme')
         expect(response.data?.[0].profile_data).to.have.property('address')
       })
     })

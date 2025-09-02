@@ -17,14 +17,14 @@ interface CustomComponent {
 const mockAdminService = {
   // Built-in components as per Zealthy requirements
   builtInComponents: [
-    { id: '1', name: 'aboutMe', label: 'About Me', type: 'textarea', required: false },
+    { id: '1', name: 'aboutme', label: 'About Me', type: 'textarea', required: false },
     { id: '2', name: 'birthdate', label: 'Birth Date', type: 'date', required: false },
     { id: '3', name: 'address', label: 'Address', type: 'address', required: false }
   ],
 
   // Default page configurations
   defaultPageConfigs: [
-    { id: 'page2', page: 2, components: ['aboutMe', 'birthdate'] },
+    { id: 'page2', page: 2, components: ['aboutme', 'birthdate'] },
     { id: 'page3', page: 3, components: ['address'] }
   ],
 
@@ -79,15 +79,15 @@ describe('Admin Page Management', () => {
     })
 
     it('should allow valid configurations with one or more components', () => {
-      expect(mockAdminService.validatePageConfig(2, ['aboutMe']).valid).to.be.true
+      expect(mockAdminService.validatePageConfig(2, ['aboutme']).valid).to.be.true
       expect(mockAdminService.validatePageConfig(3, ['address']).valid).to.be.true
-      expect(mockAdminService.validatePageConfig(2, ['aboutMe', 'birthdate']).valid).to.be.true
+      expect(mockAdminService.validatePageConfig(2, ['aboutme', 'birthdate']).valid).to.be.true
     })
   })
 
   describe('Page Configuration Updates', () => {
     it('should successfully update page configuration with valid components', async () => {
-      const result = await mockAdminService.updatePageConfig(2, ['aboutMe', 'birthdate'])
+      const result = await mockAdminService.updatePageConfig(2, ['aboutme', 'birthdate'])
       expect(result.success).to.be.true
     })
 
@@ -99,13 +99,13 @@ describe('Admin Page Management', () => {
 
     it('should handle different component combinations', async () => {
       // Single component
-      expect((await mockAdminService.updatePageConfig(2, ['aboutMe'])).success).to.be.true
+      expect((await mockAdminService.updatePageConfig(2, ['aboutme'])).success).to.be.true
       
       // Multiple components
       expect((await mockAdminService.updatePageConfig(3, ['address', 'birthdate'])).success).to.be.true
       
       // All components on one page
-      expect((await mockAdminService.updatePageConfig(2, ['aboutMe', 'birthdate', 'address'])).success).to.be.true
+      expect((await mockAdminService.updatePageConfig(2, ['aboutme', 'birthdate', 'address'])).success).to.be.true
     })
   })
 
@@ -114,11 +114,11 @@ describe('Admin Page Management', () => {
       expect(mockAdminService.builtInComponents).to.have.length(3)
     })
 
-    it('should include aboutMe component', () => {
-      const aboutMe = mockAdminService.builtInComponents.find(c => c.name === 'aboutMe')
-      expect(aboutMe).to.exist
-      expect(aboutMe?.type).to.equal('textarea')
-      expect(aboutMe?.label).to.equal('About Me')
+    it('should include aboutme component', () => {
+      const aboutme = mockAdminService.builtInComponents.find(c => c.name === 'aboutme')
+      expect(aboutme).to.exist
+      expect(aboutme?.type).to.equal('textarea')
+      expect(aboutme?.label).to.equal('About Me')
     })
 
     it('should include birthdate component', () => {

@@ -2,13 +2,14 @@
 'use client';
 
 import React from 'react';
-import StepShell from '../_components/StepShell';
-import InlineError from '../_components/InlineError';
-import FieldList from '../_components/FieldList';
-import FormNavigation from '../_components/navigation/FormNavigation';
-import { useOnboardingData } from '../_hooks/useOnboardingData';
-import { useFormModel } from '../_hooks/useFormModel';
-import { useDynamicValidation } from '../_hooks/useDynamicValidation';
+import StepShell from '../../../components/Panels/StepShell';
+import InlineError from './InlineError';
+import FieldList from '../../../components/Panels/FieldList';
+import FormNavigation from '../../../components/Navigation/FormNavigation';
+import { useOnboardingData } from '../../../components/Hooks/onboarding/useOnboardingData';
+import { useFormModel } from '../../../components/Hooks/onboarding/useFormModel';
+import { useDynamicValidation } from '../../../components/Hooks/onboarding/useDynamicValidation';
+import { useFormInitialization } from '../../../components/Hooks/onboarding/useFormInitialization';
 import { submitOnboardingStep } from '../../../../server/actions/onboarding';
 import { useRouter } from 'next/navigation';
 
@@ -25,13 +26,12 @@ export default function OnboardingStepClient({ stepNumber }: { stepNumber: numbe
 
   const { validateForm } = useDynamicValidation({ components, pageConfig });
 
-  // Apply prefill once when it arrives (no loading screen shown)
-  React.useEffect(() => {
-    if (initialForm) {
-      // Merge DB values first so any user-edited fields win if already typed
-      setForm(prev => ({ ...initialForm, ...prev }));
-    }
-  }, [initialForm, setForm]);
+  // Initialize form with proper address field handling
+  useFormInitialization({
+    initialForm,
+    components,
+    setForm
+  });
 
   if (loading || redirecting || !userEmail || !pageConfig) {
     // Show loading skeleton instead of null for better UX
@@ -76,13 +76,17 @@ export default function OnboardingStepClient({ stepNumber }: { stepNumber: numbe
         return;
       }
       
+      // Add a small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       // If this is the last step, redirect to success page
       if (stepNumber >= totalSteps) {
         router.push('/onboarding/success');
       } else {
         router.push(`/onboarding/${stepNumber + 1}`);
       }
-    } catch {
+    } catch (error) {
+      console.error('Submission error:', error);
       setFormErrors(prev => ({ ...prev, _form: 'Network or server error' }));
       setSubmitting(false);
     }
@@ -104,6 +108,16 @@ export default function OnboardingStepClient({ stepNumber }: { stepNumber: numbe
         `Step ${stepNumber}`
       }
     >
+      {/* Loading overlay when submitting */}
+      {submitting && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center space-x-3">
+            <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+            <span>Saving your progress...</span>
+          </div>
+        </div>
+      )}
+      
       <form onSubmit={handleSubmit} className="space-y-6">
         <FieldList
           components={components}
@@ -119,8 +133,9 @@ export default function OnboardingStepClient({ stepNumber }: { stepNumber: numbe
         <FormNavigation
           currentStep={stepNumber}
           totalSteps={totalSteps}
-          canGoBack={stepNumber > 1}
+          canGoBack={stepNumber > 1 && !submitting}
           canGoNext={!submitting}
+          isSubmitting={submitting}
           nextButtonText={stepNumber >= totalSteps ? 'Complete Onboarding' : undefined}
           hideStepIndicator={true}
           className="mt-8"
